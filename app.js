@@ -16,12 +16,11 @@ app.get('/', (req, res) => {
 });
 
 app.post('/senddata', (req, res) => {
-	var email = (req.body.email);
-	var password = (req.body.password);
-	console.log(email);
+	var note = (req.body.note);
+	console.log(note);
 
 	var mod_spawn = require("child_process").spawn;		
-	var process = mod_spawn('python',["./validate.py",email, password] ); 
+	var process = mod_spawn('python',["./write.py",note] ); 
 
 	process.stdout.on('data', function(data) {
 
@@ -44,5 +43,12 @@ app.post('/senddata', (req, res) => {
 
 });
 
+
+app.get('/read', (req, res) => {
+	const fs = require('fs');
+	const data = fs.readFileSync('read.txt', 'utf8');
+
+	res.send('<p>' + data + '</p>');
+});
 
 app.listen(port, () => console.log('App is listening on port '+port+':'));
